@@ -1,0 +1,75 @@
+{% extends "bodylay.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-10 offset-md-3">
+        <div class="col-lg-8">
+                
+            <h3>Makaleler</h3>
+            <hr>
+
+            <form>
+                {% csrf_token %} 
+               <input type="text" name = "keyword" class="input-sm" maxlength="64" placeholder="Ara...">
+             <button type="submit" class="btn btn-danger">Ara</button>
+            </form>
+            
+           <hr>
+{% if articles %}
+        {% for article in articles %}
+            
+                    
+                <!-- Post Content Column -->
+                    
+                    <!-- Title -->
+                    <h3 class="mt-4">
+                        <a href="{% url 'article:detailarticle' article.id %}"> {{article.title}}</a> 
+                    </h3>
+                
+                    <!-- Author -->
+                    <p class="lead">
+                        
+                        {{article.author.username}} tarafından yayınlandı
+                    </p>
+                
+                    <hr>
+                
+                    <!-- Date/Time -->
+                    <p>{{article.created_date}}</p>
+                
+                    <hr>
+                
+                    
+                    {% if article.article_image %}
+                    <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="">
+                    {% endif %}
+                    
+                
+                    <hr>
+                
+                    <!-- Post Content -->
+                    <p class="lead">
+                        {{article.content|safe}}
+                    </p>
+                    
+
+                    <a href="/articles/detailarticle/{{article.id}}" class="btn btn-primary text-right">Devamını Oku</a>
+
+                    <hr>
+                
+                    
+                    
+        {% endfor %}
+        
+{% else %}
+        <div class="alert alert-danger">
+            Bu blogda herhangi bir makale bulunmamaktadır.
+        </div>
+{% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
